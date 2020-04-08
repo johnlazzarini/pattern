@@ -4,6 +4,8 @@ let mainContext = mainCanvas.getContext('2d');
 let canvasWidth = mainCanvas.width;
 let canvasHeight = mainCanvas.height;
 
+let backgroundColor = '#ffffff'
+
 // this array contains a reference to every circle that you will create
 let circles = new Array();
 
@@ -17,14 +19,18 @@ function Circle(angle, sign, radius, rotationRadius, initialX, initialY) {
 	this.radius = radius;
 	this.rotationRadius = rotationRadius;
 	this.initialX = initialX;
-	this.initialY = initialY;
-	this.incrementer = .01 + Math.random() * .1;
+  this.initialY = initialY;
+  this.color = "#" + Math.random().toString(16).slice(2, 8);
+  this.thickness = 5 + Math.random() * 40;
+
+  // this.incrementer = .01 + Math.random() * .1;
+  this.incrementer = 1;
 }
 
 Circle.prototype.update = function () {
 
 
-  if (circles[0].radius > (canvasWidth / 1.5)){
+  if (circles[0].radius > (canvasWidth / 1.2)){
     circles.shift();
     createCircle();
   }
@@ -37,16 +43,18 @@ Circle.prototype.update = function () {
 	
 	if (this.angle >= (Math.PI * 2)) {
 		this.angle = 0;
-    //this.incrementer = .01 + Math.random() * .1; //random incrementor
-    this.incrementer = .01; //random incrementor
+    //this.incrementer = .01 + Math.random() * .1; //random
+    this.incrementer = 1; 
 
 	}
 
 	// The following code is responsible for actually drawing the circle on the screen
 	mainContext.beginPath();
 	mainContext.arc(this.currentX, this.currentY, this.radius, 0, Math.PI * 2, false);
-	mainContext.closePath();
-	mainContext.fillStyle = 'rgba(3, 0, 129, .1)';
+  mainContext.closePath();
+  mainContext.strokeStyle = this.color;
+  mainContext.fillStyle = 'rgba(3, 0, 129, .1)';
+  mainContext.lineWidth = this.thickness;
 	mainContext.stroke();
 };
 
@@ -105,17 +113,16 @@ console.log(circles.length);
       // create the Circle object
       let circle = new Circle(angle, sign, radius, rotationRadius, initialX, initialY);
       circles.push(circle);
-    
 
     // call the draw function approximately 60 times a second
-    requestAnimationFrame(draw);
+    //requestAnimationFrame(draw);
   }
 
 createCircles();
 
 function draw() {
 	mainContext.clearRect(0, 0, canvasWidth, canvasHeight);
-	mainContext.fillStyle = '#ffffff';
+	mainContext.fillStyle = backgroundColor;
   mainContext.fillRect(0, 0, canvasWidth, canvasHeight);
 	
 	for (let i = 0; i < circles.length; i++) {
@@ -125,4 +132,16 @@ function draw() {
 	
 	// call the draw function again!
 	requestAnimationFrame(draw);
+}
+
+function changeCircleColors() {
+  for (var i = 0; i < circles.length; i++){
+    circles[i].color = "#" + Math.random().toString(16).slice(2, 8);
+  }
+}
+
+function changeBackgroundColor(){
+  mainContext.clearRect(0, 0, canvasWidth, canvasHeight);
+	backgroundColor = "#" + Math.random().toString(16).slice(2, 8);
+  mainContext.fillRect(0, 0, canvasWidth, canvasHeight);
 }
