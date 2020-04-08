@@ -38,7 +38,7 @@ function clock() {
     ctx.rotate((Math.PI / 30) * min + (Math.PI / 1800) * sec);
     ctx.lineWidth = 10;
     ctx.beginPath();
-    ctx.moveTo(-112, 0);
+    ctx.moveTo(-5, 0);
     ctx.lineTo(112, 0);
     ctx.stroke();
     ctx.restore();
