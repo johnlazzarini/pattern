@@ -21,7 +21,7 @@ function Circle(angle, sign, radius, rotationRadius, initialX, initialY) {
 	this.initialX = initialX;
   this.initialY = initialY;
   this.color = "#" + Math.random().toString(16).slice(2, 8);
-  this.thickness = 5 + Math.random() * 40;
+  this.thickness = 2;
 
   // this.incrementer = .01 + Math.random() * .1;
   this.incrementer = 1;
@@ -41,12 +41,12 @@ Circle.prototype.update = function () {
 	this.currentX = this.initialX;
   this.currentY = this.initialY;
   
-  this.thickness *= 1.0035
+  this.thickness *= 1.00
 	
 	if (this.angle >= (Math.PI * 2)) {
 		this.angle = 0;
     //this.incrementer = .01 + Math.random() * .1; //random
-    this.incrementer = 1; 
+    this.incrementer = 0.5; 
 
 	}
 
@@ -94,9 +94,9 @@ function createCircles() {
 function createCircle() {
 //create a single circle
 
-console.log(circles.length);
-      console.log("hello");
-      let radius = Math.random() * 40;
+console.log("hello");
+      // let radius = Math.random() * 40;
+      let radius = 0.1;
       let initialX = canvasWidth / 2;
       let initialY = canvasHeight / 2;
       let rotationRadius = 1 + Math.random() * 30;
