@@ -30,7 +30,7 @@ function Circle(angle, sign, radius, rotationRadius, initialX, initialY) {
 Circle.prototype.update = function () {
 
 
-  if (circles[0].radius > (canvasWidth / 1.2)){
+  if (circles[0].radius > (canvasWidth / 1.25)){
     circles.shift();
     createCircle();
   }
@@ -39,7 +39,9 @@ Circle.prototype.update = function () {
   this.radius += this.incrementer;
 	
 	this.currentX = this.initialX;
-	this.currentY = this.initialY;
+  this.currentY = this.initialY;
+  
+  this.thickness *= 1.0035
 	
 	if (this.angle >= (Math.PI * 2)) {
 		this.angle = 0;
@@ -67,7 +69,7 @@ function createCircles() {
 		let radius = 5 + Math.random() * 300;
 		let initialX = canvasWidth / 2;
 		let initialY = canvasHeight / 2;
-		let rotationRadius = 1 + Math.random() * 30;
+		let rotationRadius = 1;
 		let angle = Math.random() * 2 * Math.PI;
 		
 		let signHelper = Math.floor(Math.random() * 2);
