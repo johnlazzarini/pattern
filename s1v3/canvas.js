@@ -1,80 +1,117 @@
-function clock() {
-    var now = new Date();
-    var canvas = document.getElementById('canvas');
-    var ctx = document.getElementById('canvas').getContext('2d');
-    canvas.width = 600;
-    canvas.height = 600;
-    ctx.save();
-    ctx.clearRect(0, 0, 190, 190);
-    ctx.translate(300, 300);
-    // ctx.scale(0.2, 0.2);
-    ctx.rotate(-Math.PI / 2);
-    ctx.strokeStyle = 'black';
-    ctx.fillStyle = 'white';
-    ctx.lineWidth = 8;
-    ctx.lineCap = 'round';
+let mainCanvas = document.getElementById("canvas");
+let mainContext = mainCanvas.getContext('2d');
 
-   
-    var sec = now.getSeconds();
-    var min = now.getMinutes();
-    var hr  = now.getHours();
-    
-    hr = hr >= 12 ? hr - 12 : hr;
-  
-    ctx.fillStyle = 'black';
-  
-    // write Hours
-    ctx.save();
-    ctx.rotate(hr * (Math.PI / 6) + (Math.PI / 360) * min + (Math.PI / 21600) *sec);
-    ctx.lineWidth = 14;
-    ctx.beginPath();
-    ctx.moveTo(-20, 0);
-    ctx.lineTo(80, 0);
-    ctx.stroke();
-    ctx.restore();
-  
-    // write Minutes
-    ctx.save();
-    ctx.rotate((Math.PI / 30) * min + (Math.PI / 1800) * sec);
-    ctx.lineWidth = 10;
-    ctx.beginPath();
-    ctx.moveTo(-5, 0);
-    ctx.lineTo(112, 0);
-    ctx.stroke();
-    ctx.restore();
-   
-    // Write seconds
-    ctx.save();
-    ctx.rotate(sec * Math.PI / 30);
-    ctx.strokeStyle = '#D40000';
-    ctx.fillStyle = '#D40000';
-    ctx.lineWidth = 6;
-    ctx.beginPath();
-    ctx.moveTo(-30, 0);
-    ctx.lineTo(83, 0);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(0, 0, 10, 0, Math.PI * 2, true);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(95, 0, 10, 0, Math.PI * 2, true);
-    ctx.stroke();
-    ctx.fillStyle = 'rgba(0, 0, 0, 0)';
-    ctx.arc(0, 0, 2, 0, Math.PI * 2, true);
-    ctx.fill();
-    ctx.restore();
-  
-    ctx.beginPath();
-    ctx.lineWidth = 14;
-    ctx.strokeStyle = '#9e00ff';
-    ctx.arc(0, 0, 142, 0, Math.PI * 2, true);
-    ctx.stroke();
+let canvasWidth = mainCanvas.width;
+let canvasHeight = mainCanvas.height;
 
+// this array contains a reference to every circle that you will create
+let circles = new Array();
+
+//
+// The Circle "constructor" is responsible for creating the circle objects and defining the various properties
+// they have
+//
+function Circle(angle, sign, radius, rotationRadius, initialX, initialY) {
+	this.angle = angle;
+	this.sign = sign;
+	this.radius = radius;
+	this.rotationRadius = rotationRadius;
+	this.initialX = initialX;
+	this.initialY = initialY;
+	this.incrementer = .01 + Math.random() * .1;
+}
+
+Circle.prototype.update = function () {
+
+  this.angle += this.incrementer;
+  this.radius += this.incrementer;
+	
+	this.currentX = this.initialX + this.rotationRadius * Math.cos(this.angle);
+	this.currentY = this.initialY + this.rotationRadius * Math.sin(this.angle);
+	
+	if (this.angle >= (Math.PI * 2)) {
+		this.angle = 0;
+    this.incrementer = .01 + Math.random() * .1; //random incrementor
+	}
+
+	// The following code is responsible for actually drawing the circle on the screen
+	mainContext.beginPath();
+	mainContext.arc(this.currentX, this.currentY, this.radius, 0, Math.PI * 2, false);
+	mainContext.closePath();
+	mainContext.fillStyle = 'rgba(177, 0, 129, .1)';
+	mainContext.stroke();
+};
+
+//
+// This function creates the circles that you end up seeing
+//
+function createCircles() {
+// change the range of this loop to adjust the number of circles that you see
+	for (let i = 0; i < 1; i++) {
+		let radius = 5 + Math.random() * 300;
+		let initialX = canvasWidth / 2;
+		let initialY = canvasHeight / 2;
+		let rotationRadius = 1 + Math.random() * 30;
+		let angle = Math.random() * 2 * Math.PI;
+		
+		let signHelper = Math.floor(Math.random() * 2);
+		let sign;
+		
+		// Randomly specify whether the circle will be rotating clockwise or counterclockwise
+		if (signHelper == 1) {
+			sign = -1;
+		} else {
+			sign = 1;
+		}
+		
+		// create the Circle object
+		let circle = new Circle(angle, sign, radius, rotationRadius, initialX, initialY);
+		circles.push(circle);
+	}
+	
+	// call the draw function approximately 60 times a second
+	requestAnimationFrame(draw);
+}
+
+function createCircle() {
+//create a single circle
+      console.log("hello");
+      let radius = 5 + Math.random() * 40;
+      let initialX = canvasWidth / 2;
+      let initialY = canvasHeight / 2;
+      let rotationRadius = 1 + Math.random() * 30;
+      let angle = Math.random() * 2 * Math.PI;
+      
+      let signHelper = Math.floor(Math.random() * 2);
+      let sign;
+      
+      // Randomly specify whether the circle will be rotating clockwise or counterclockwise
+      if (signHelper == 1) {
+        sign = -1;
+      } else {
+        sign = 1;
+      }
+      
+      // create the Circle object
+      let circle = new Circle(angle, sign, radius, rotationRadius, initialX, initialY);
+      circles.push(circle);
     
-  
-    ctx.restore();
-  
-    window.requestAnimationFrame(clock);
+    // call the draw function approximately 60 times a second
+    requestAnimationFrame(draw);
   }
-  
-  window.requestAnimationFrame(clock);
+
+createCircles();
+
+function draw() {
+	mainContext.clearRect(0, 0, canvasWidth, canvasHeight);
+	mainContext.fillStyle = '#ffffff';
+	mainContext.fillRect(0, 0, canvasWidth, canvasHeight);
+	
+	for (let i = 0; i < circles.length; i++) {
+		let circle = circles[i];
+		circle.update();
+	}
+	
+	// call the draw function again!
+	requestAnimationFrame(draw);
+}
