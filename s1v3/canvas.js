@@ -32,9 +32,16 @@ function Circle(angle, sign, radius, rotationRadius, initialX, initialY) {
 Circle.prototype.update = function () {
 
 
-  if (circles[0].radius > (canvasWidth / 1.29) || circles[0].radius > (canvasHeight / 1.29)){
-    circles.shift();
-    createCircle();
+  if (canvasHeight > canvasWidth){
+    if (circles[0].radius > (canvasHeight / 1.29)){
+      circles.shift();
+      createCircle();
+    }
+  } else {
+    if (circles[0].radius > (canvasWidth / 1.29)){
+      circles.shift();
+      createCircle();
+    }
   }
 
   this.angle += this.incrementer;
