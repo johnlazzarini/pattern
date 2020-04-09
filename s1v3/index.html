@@ -7,22 +7,92 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="./styles.css">
     <title>Johnlee's Apps</title>
+    <style>
+        html, body {
+          width: 100%;
+          height: 100%;
+          margin: 0px;
+          border: 0;
+          overflow: hidden; /*  Disable scrollbars */
+          display: block;  /* No floating content on sides */
+        }
+        </style>
 </head>
 <body>
     <!-- <div id="helloVue">
         <h1>{{ title }}</h1>
         <p>{{ message }}</p>
     </div> -->
-    <button onclick="createCircle()">Add circle</button>
-    <button onclick="changeCircleColors()">Change ring colors</button>
-    <button onclick="changeBackgroundColor()">Change background color</button>
-    <div id="canvasContainer">
-    <canvas height="600" width="600" id="canvas">
+
+    <div id="mySidenav" class="sidenav" style="position: absolute;z-index: 3;">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a onclick="createCircle()">Create Circle</a>
+        <a onclick="changeCircleColors()">Randomize Ring Colors</a>
+        <a onclick="changeBackgroundColor()">Randomize Background Colors</a>
+        <!-- <button onclick="createCircle()">Add circle</button>
+        <button onclick="changeCircleColors()">Change ring colors</button>
+        <button onclick="changeBackgroundColor()">Change background color</button> -->
+      </div>
+      <!-- <span style="font-size:30px;cursor:pointer;position:absolute;z-index: 2;" onclick="openNav()">&#9776; open</span> -->
+      <span style="font-size:40px;cursor:pointer;position:absolute;z-index: 2;left: 16px;top: 16px" onclick="openNav()">&#9776;</span>
+      <div id="main">
+    <div id="canvasContainer" >
+    <canvas style='position: absolute; z-index: 1; left:0px; top:0px;' id="canvas">
     </canvas>
+    <!-- <button onclick="openNav()">Tap to Open Menu</button>
+ -->
 </div>
+<script>
+    (function() {
+        var
+        // Obtain a reference to the canvas element using its id.
+        htmlCanvas = document.getElementById('canvas'),
+        // Obtain a graphics context on the canvas element for drawing.
+        context = htmlCanvas.getContext('2d');
+
+       // Start listening to resize events and draw canvas.
+       initialize();
+
+       function initialize() {
+           // Register an event listener to call the resizeCanvas() function 
+           // each time the window is resized.
+           window.addEventListener('resize', resizeCanvas, false);
+           // Draw canvas border for the first time.
+           resizeCanvas();
+        }
+
+        // Display custom canvas. In this case it's a blue, 5 pixel 
+        // border that resizes along with the browser window.
+        function redraw() {
+           context.strokeStyle = 'blue';
+           context.lineWidth = '5';
+           context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
+        }
+
+        // Runs each time the DOM window resize event fires.
+        // Resets the canvas dimensions to match window,
+        // then draws the new borders accordingly.
+        function resizeCanvas() {
+            htmlCanvas.width = window.innerWidth;
+            htmlCanvas.height = window.innerHeight;
+            redraw();
+        }
+    })();
+
+    </script>
     <script src="addgen.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <script src="app.js"></script>
     <script src="canvas.js"></script>
+    <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.width = "250px";
+        }
+        
+        function closeNav() {
+          document.getElementById("mySidenav").style.width = "0";
+        }
+        </script>
+</div>
 </body>
 </html>

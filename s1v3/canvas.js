@@ -1,5 +1,7 @@
 let mainCanvas = document.getElementById("canvas");
 let mainContext = mainCanvas.getContext('2d');
+mainCanvas.addEventListener('click', createCircle, false);
+
 
 let canvasWidth = mainCanvas.width;
 let canvasHeight = mainCanvas.height;
@@ -21,7 +23,7 @@ function Circle(angle, sign, radius, rotationRadius, initialX, initialY) {
 	this.initialX = initialX;
   this.initialY = initialY;
   this.color = "#" + Math.random().toString(16).slice(2, 8);
-  this.thickness = 2;
+  this.thickness = 5;
 
   // this.incrementer = .01 + Math.random() * .1;
   this.incrementer = 1;
@@ -30,7 +32,7 @@ function Circle(angle, sign, radius, rotationRadius, initialX, initialY) {
 Circle.prototype.update = function () {
 
 
-  if (circles[0].radius > (canvasWidth / 1.25)){
+  if (circles[0].radius > (canvasWidth / 1.29) || circles[0].radius > (canvasHeight / 1.29)){
     circles.shift();
     createCircle();
   }
@@ -41,12 +43,12 @@ Circle.prototype.update = function () {
 	this.currentX = this.initialX;
   this.currentY = this.initialY;
   
-  this.thickness *= 1.00
+  this.thickness *= 1.0045
 	
 	if (this.angle >= (Math.PI * 2)) {
 		this.angle = 0;
     //this.incrementer = .01 + Math.random() * .1; //random
-    this.incrementer = 0.5; 
+    this.incrementer = 1.2; 
 
 	}
 
@@ -66,9 +68,12 @@ Circle.prototype.update = function () {
 function createCircles() {
 // change the range of this loop to adjust the number of circles that you see
 	for (let i = 0; i < 1; i++) {
-		let radius = 5 + Math.random() * 300;
+    // let radius = 1 + Math.random() * 300;
+    let radius = 1;
 		let initialX = canvasWidth / 2;
-		let initialY = canvasHeight / 2;
+    let initialY = canvasHeight / 2;
+    // let initialX = Math.floor(Math.random() * canvasWidth);
+		// let initialY = Math.random() * canvasHeight;
 		let rotationRadius = 1;
 		let angle = Math.random() * 2 * Math.PI;
 		
@@ -86,22 +91,22 @@ function createCircles() {
 		let circle = new Circle(angle, sign, radius, rotationRadius, initialX, initialY);
 		circles.push(circle);
 	}
-	
+  
+
 	// call the draw function approximately 60 times a second
 	requestAnimationFrame(draw);
 }
 
 function createCircle() {
 //create a single circle
-
-console.log("hello");
       // let radius = Math.random() * 40;
       let radius = 0.1;
       let initialX = canvasWidth / 2;
       let initialY = canvasHeight / 2;
+      // let initialX = Math.floor(Math.random() * canvasWidth);
+		  // let initialY = Math.random() * canvasHeight;
       let rotationRadius = 1 + Math.random() * 30;
       let angle = Math.random() * 2 * Math.PI;
-      
       let signHelper = Math.floor(Math.random() * 2);
       let sign;
       
