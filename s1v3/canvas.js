@@ -26,7 +26,7 @@ function Circle(angle, sign, radius, rotationRadius, initialX, initialY) {
   this.thickness = 5;
 
   // this.incrementer = .01 + Math.random() * .1;
-  this.incrementer = 1;
+  this.incrementer = 1.1;
 }
 
 Circle.prototype.update = function () {
@@ -44,8 +44,10 @@ Circle.prototype.update = function () {
     }
   }
 
+  this.incrementer *= 1.1;
   this.angle += this.incrementer;
   this.radius += this.incrementer;
+  // this.radius *= 1.001;
 	
 	this.currentX = this.initialX;
   this.currentY = this.initialY;
